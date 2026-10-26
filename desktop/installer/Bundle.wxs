@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix
+    xmlns="http://wixtoolset.org/schemas/v4/wxs"
+    xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal"
+    xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util"
+>
+    <Bundle
+        Name="CamDroid $(var.ReleaseVersion) Setup"
+        Manufacturer="Csral"
+        IconSourceFile="$(var.AppIcon)"
+        Version="$(var.ProductVersion)"
+        UpgradeCode="D4110760-2522-4197-8F36-6FB64EE26256"
+        Copyright="Copyright (C) 2026 Csral"
+    >
+        <BootstrapperApplication>
+            <Payload SourceFile="$(var.AppIcon)" Name="camdroid.ico"/>
+            <Payload SourceFile="$(var.AppLogo)" Name="camdroid.png"/>
+            <bal:WixStandardBootstrapperApplication
+                Theme="hyperlinkLicense"
+                LicenseUrl=""
+                ThemeFile="$(var.ThemeFile)"
+                SuppressOptionsUI="yes"
+                ShowVersion="yes"
+            />
+        </BootstrapperApplication>
+        <Variable
+            Name="InstallFolder"
+            Type="formatted"
+            Value="[ProgramFiles64Folder]CamDroid"
+            Persisted="yes"
+        />
+        <Variable
+            Name="AddToPath"
+            Type="numeric"
+            Value="0"
+            Persisted="yes"
+        />
+        <Variable
+            Name="StartMenu"
+            Type="numeric"
+            Value="1"
+            Persisted="yes"
+        />
+        <util:RegistrySearch
+            Id="FindInstalledFolder"
+            Root="HKLM"
+            Key="Software\CamDroid"
+            Value="InstallFolder"
+            Result="value"
+            Variable="InstallFolder"
+            Bitness="always64"
+        />
+        <Chain>
+            <MsiPackage
+                Id="CamDroidDesktop"
+                SourceFile="$(var.MsiPackage)"
+                Compressed="yes"
+                Vital="yes"
+            >
+                <MsiProperty Name="INSTALLFOLDER" Value="[InstallFolder]"/>
+                <MsiProperty Name="ADDTOPATH" Value="[AddToPath]"/>
+                <MsiProperty Name="INSTALLSTARTMENU" Value="[StartMenu]"/>
+            </MsiPackage>
+        </Chain>
+    </Bundle>
+</Wix>

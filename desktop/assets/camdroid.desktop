@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=CamDroid
+Comment=Use your Android camera as a desktop webcam
+Exec=camdroid_desktop
+Icon=camdroid
+Terminal=false
+Categories=AudioVideo;Video;

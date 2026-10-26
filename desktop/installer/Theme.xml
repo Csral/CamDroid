@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Theme xmlns="http://wixtoolset.org/schemas/v4/thmutil">
+    <Font
+        Id="0"
+        Height="-15"
+        Weight="400"
+        Foreground="302820"
+        Background="ffffff"
+    >Segoe UI</Font>
+    <Font
+        Id="1"
+        Height="-34"
+        Weight="600"
+        Foreground="302820"
+    >Segoe UI</Font>
+    <Font
+        Id="2"
+        Height="-20"
+        Weight="600"
+        Foreground="302820"
+    >Segoe UI</Font>
+    <Font
+        Id="3"
+        Height="-14"
+        Weight="400"
+        Foreground="807060"
+        Background="ffffff"
+    >Segoe UI</Font>
+    <Window
+        Width="640"
+        Height="540"
+        HexStyle="100a0000"
+        FontId="0"
+        Caption="CamDroid Setup"
+        IconFile="camdroid.ico"
+    >
+        <ImageControl X="36" Y="28" Width="48" Height="48" ImageFile="camdroid.png" Visible="yes"/>
+        <Label
+            X="100"
+            Y="28"
+            Width="504"
+            Height="48"
+            FontId="1"
+            Visible="yes"
+            DisablePrefix="yes"
+        >CamDroid</Label>
+        <Label
+            X="36"
+            Y="80"
+            Width="568"
+            Height="24"
+            FontId="3"
+            Visible="yes"
+            DisablePrefix="yes"
+        >Your phone camera. Ready for your desktop.</Label>
+        <Page Name="Loading">
+            <Label
+                X="36"
+                Y="148"
+                Width="568"
+                Height="32"
+                FontId="2"
+            >Preparing setup</Label>
+            <Label
+                X="36"
+                Y="192"
+                Width="568"
+                Height="48"
+                FontId="3"
+            >Checking your device and installed version...</Label>
+        </Page>
+        <Page Name="Install">
+            <Label
+                X="36"
+                Y="132"
+                Width="568"
+                Height="30"
+                FontId="2"
+            >Make yourself at home</Label>
+            <Label
+                X="36"
+                Y="172"
+                Width="568"
+                Height="46"
+                FontId="3"
+            >Install the desktop receiver and virtual webcam. Choose where CamDroid lives and how you open it.</Label>
+            <Label
+                X="36"
+                Y="232"
+                Width="568"
+                Height="22"
+                FontId="0"
+            >Installation folder</Label>
+            <Editbox
+                Name="InstallFolder"
+                X="36"
+                Y="260"
+                Width="446"
+                Height="32"
+                TabStop="yes"
+                FontId="0"
+                FileSystemAutoComplete="yes"
+            />
+            <Button
+                Name="BrowseButton"
+                X="494"
+                Y="260"
+                Width="110"
+                Height="32"
+                TabStop="yes"
+                FontId="0"
+            >
+                <Text>Browse...</Text>
+                <BrowseDirectoryAction VariableName="InstallFolder"/>
+            </Button>
+            <Checkbox
+                Name="StartMenu"
+                X="36"
+                Y="314"
+                Width="568"
+                Height="26"
+                TabStop="yes"
+                FontId="0"
+            >Create Start menu shortcuts</Checkbox>
+            <Checkbox
+                Name="AddToPath"
+                X="36"
+                Y="350"
+                Width="568"
+                Height="26"
+                TabStop="yes"
+                FontId="0"
+            >Add CamDroid to PATH for terminal use</Checkbox>
+            <Label
+                X="36"
+                Y="398"
+                Width="568"
+                Height="40"
+                FontId="3"
+            >Webcam support is included. Windows will ask for administrator approval when you install.</Label>
+            <Button
+                Name="InstallButton"
+                X="348"
+                Y="476"
+                Width="160"
+                Height="36"
+                TabStop="yes"
+                FontId="0"
+            >Install CamDroid</Button>
+            <Button
+                Name="InstallCancelButton"
+                X="520"
+                Y="476"
+                Width="84"
+                Height="36"
+                TabStop="yes"
+                FontId="0"
+            >
+                <Text>Cancel</Text>
+                <CloseWindowAction/>
+            </Button>
+        </Page>
+        <Page Name="Progress">
+            <Label
+                X="36"
+                Y="148"
+                Width="568"
+                Height="32"
+                FontId="2"
+            >Setting things up</Label>
+            <Label
+                Name="OverallProgressPackageText"
+                X="36"
+                Y="204"
+                Width="568"
+                Height="48"
+                FontId="3"
+            />
+            <Progressbar
+                Name="OverallCalculatedProgressbar"
+                X="36"
+                Y="276"
+                Width="568"
+                Height="10"
+            />
+            <Label
+                X="36"
+                Y="312"
+                Width="568"
+                Height="48"
+                FontId="3"
+            >Installing CamDroid, camera support and your selected shortcuts.</Label>
+            <Button
+                Name="ProgressCancelButton"
+                X="494"
+                Y="476"
+                Width="110"
+                Height="36"
+                TabStop="yes"
+                FontId="0"
+            >Cancel</Button>
+        </Page>
+        <Page Name="Modify">
+            <Label
+                X="36"
+                Y="148"
+                Width="568"
+                Height="32"
+                FontId="2"
+            >CamDroid is already here</Label>
+            <Label
+                X="36"
+                Y="204"
+                Width="568"
+                Height="60"
+                FontId="3"
+            >Repair missing files or remove CamDroid and its virtual webcam from this PC.</Label>
+            <Button
+                Name="RepairButton"
+                X="36"
+                Y="300"
+                Width="180"
+                Height="40"
+                TabStop="yes"
+                FontId="0"
+            >Repair installation</Button>
+            <Button
+                Name="UninstallButton"
+                X="232"
+                Y="300"
+                Width="180"
+                Height="40"
+                TabStop="yes"
+                FontId="0"
+            >Uninstall CamDroid</Button>
+            <Button
+                Name="ModifyCancelButton"
+                X="494"
+                Y="476"
+                Width="110"
+                Height="36"
+                TabStop="yes"
+                FontId="0"
+            >
+                <Text>Close</Text>
+                <CloseWindowAction/>
+            </Button>
+        </Page>
+        <Page Name="Success">
+            <Label
+                X="36"
+                Y="148"
+                Width="568"
+                Height="32"
+                FontId="2"
+            >
+                <Text>You're all set</Text>
+                <Text Condition="WixBundleAction = 4">CamDroid removed</Text>
+            </Label>
+            <Label
+                X="36"
+                Y="204"
+                Width="568"
+                Height="72"
+                FontId="3"
+            >
+                <Text>Open CamDroid on this PC, then connect from the Android app on the same network.</Text>
+                <Text Condition="WixBundleAction = 4">CamDroid and its webcam support have been uninstalled.</Text>
+            </Label>
+            <Label
+                X="36"
+                Y="312"
+                Width="568"
+                Height="54"
+                FontId="3"
+                VisibleCondition="WixStdBARestartRequired"
+            >Restart Windows to finish replacing files that were in use.</Label>
+            <Button
+                Name="SuccessRestartButton"
+                X="348"
+                Y="476"
+                Width="140"
+                Height="36"
+                TabStop="yes"
+                FontId="0"
+                HideWhenDisabled="yes"
+            >Restart Windows</Button>
+            <Button
+                Name="SuccessCloseButton"
+                X="494"
+                Y="476"
+                Width="110"
+                Height="36"
+                TabStop="yes"
+                FontId="0"
+            >
+                <Text>Done</Text>
+                <CloseWindowAction/>
+            </Button>
+        </Page>
+        <Page Name="Failure">
+            <Label
+                X="36"
+                Y="148"
+                Width="568"
+                Height="32"
+                FontId="2"
+            >Setup couldn't finish</Label>
+            <Hypertext
+                Name="FailureMessageText"
+                X="36"
+                Y="204"
+                Width="568"
+                Height="120"
+                FontId="3"
+                TabStop="yes"
+            />
+            <Hypertext
+                Name="FailureLogFileLink"
+                X="36"
+                Y="344"
+                Width="568"
+                Height="40"
+                FontId="3"
+                TabStop="yes"
+            >&lt;a href="#"&gt;View the setup log&lt;/a&gt;</Hypertext>
+            <Button
+                Name="FailureRestartButton"
+                X="348"
+                Y="476"
+                Width="140"
+                Height="36"
+                TabStop="yes"
+                FontId="0"
+                HideWhenDisabled="yes"
+            >Restart Windows</Button>
+            <Button
+                Name="FailureCloseButton"
+                X="494"
+                Y="476"
+                Width="110"
+                Height="36"
+                TabStop="yes"
+                FontId="0"
+            >
+                <Text>Close</Text>
+                <CloseWindowAction/>
+            </Button>
+        </Page>
+        <Page Name="Help">
+            <Label
+                X="36"
+                Y="148"
+                Width="568"
+                Height="32"
+                FontId="2"
+            >CamDroid setup</Label>
+            <Label
+                X="36"
+                Y="204"
+                Width="568"
+                Height="120"
+                FontId="3"
+            >Run setup to install, repair or uninstall. For unattended use, pass /quiet or /passive. Use /log followed by a file path to save diagnostics.</Label>
+            <Button
+                Name="HelpCloseButton"
+                X="494"
+                Y="476"
+                Width="110"
+                Height="36"
+                TabStop="yes"
+                FontId="0"
+            >
+                <Text>Close</Text>
+                <CloseWindowAction/>
+            </Button>
+        </Page>
+    </Window>
+</Theme>

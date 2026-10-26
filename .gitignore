@@ -1,0 +1,82 @@
+# Android / Gradle / Kotlin
+.gradle/
+.kotlin/
+.cxx/
+.externalNativeBuild/
+local.properties
+captures/
+*.apk
+*.aab
+*.apks
+
+# CMake and generated build directories
+build/
+build-*/
+cmake-build-*/
+dist/
+out/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Testing/
+compile_commands.json
+CMakeUserPresets.json
+
+# Downloaded dependencies and installer tooling
+vcpkg_installed/
+.wix/
+
+# Native binaries and installer artifacts
+*.obj
+*.o
+*.lib
+*.a
+*.so
+*.so.*
+*.dll
+*.exe
+*.pdb
+*.ilk
+*.exp
+*.msi
+*.msix
+*.cab
+*.wixpdb
+*.wixobj
+
+# Local signing material and credentials
+*.jks
+*.keystore
+*.pfx
+*.p12
+*.key
+keystore.properties
+key.properties
+.env
+.env.*
+!.env.example
+
+# Local IDE state
+*.iml
+.idea/
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Local agent notes
+.codex/
+
+# OS and editor leftovers
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# Personal reference notes
+/personal_references/

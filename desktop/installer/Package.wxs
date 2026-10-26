@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix
+    xmlns="http://wixtoolset.org/schemas/v4/wxs"
+    xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+    xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util"
+>
+    <Package
+        Name="CamDroid $(var.ReleaseVersion)"
+        Manufacturer="Csral"
+        Version="$(var.ProductVersion)"
+        Language="1033"
+        UpgradeCode="5731CE9C-0416-4C59-AF52-39083C9D6402"
+        Scope="perMachine"
+        InstallerVersion="500"
+    >
+        <WixVariable Id="WixUIBannerBmp" Value="$(var.BannerBitmap)"/>
+        <WixVariable Id="WixUIDialogBmp" Value="$(var.DialogBitmap)"/>
+        <Icon Id="CamDroidIcon.ico" SourceFile="$(var.AppIcon)"/>
+        <Property Id="ARPPRODUCTICON" Value="CamDroidIcon.ico"/>
+        <SummaryInformation Description="CamDroid desktop and virtual webcam"/>
+        <MajorUpgrade
+            AllowSameVersionUpgrades="yes"
+            DowngradeErrorMessage="A newer version of CamDroid is already installed."
+            Schedule="afterInstallInitialize"
+        />
+        <MediaTemplate EmbedCab="yes" CompressionLevel="high"/>
+        <Property Id="REINSTALLMODE" Value="amus"/>
+        <Property Id="INSTALLFOLDER" Secure="yes"/>
+        <Property Id="ADDTOPATH" Value="0" Secure="yes"/>
+        <Property Id="INSTALLSTARTMENU" Value="1" Secure="yes"/>
+        <Property Id="PREVIOUSINSTALLFOLDER" Secure="yes">
+            <RegistrySearch
+                Id="PreviousFolder"
+                Root="HKLM"
+                Key="Software\CamDroid"
+                Name="InstallFolder"
+                Type="raw"
+                Bitness="always64"
+            />
+        </Property>
+        <SetProperty
+            Id="INSTALLFOLDER"
+            Value="[PREVIOUSINSTALLFOLDER]"
+            After="AppSearch"
+            Sequence="both"
+            Condition="NOT INSTALLFOLDER AND PREVIOUSINSTALLFOLDER"
+        />
+        <Property Id="MSIRESTARTMANAGERCONTROL" Value="DisableShutdown"/>
+        <Property Id="CAMDROID_WINDOWS_BUILD">
+            <RegistrySearch
+                Id="WindowsBuild"
+                Root="HKLM"
+                Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+                Name="CurrentBuildNumber"
+                Type="raw"
+                Bitness="always64"
+            />
+        </Property>
+        <Launch
+            Condition="Installed OR CAMDROID_WINDOWS_BUILD &gt;= 22000"
+            Message="CamDroid virtual webcam requires Windows 11 or newer."
+        />
+        <StandardDirectory Id="ProgramFiles64Folder">
+            <Directory Id="INSTALLFOLDER" Name="CamDroid"/>
+        </StandardDirectory>
+        <StandardDirectory Id="ProgramMenuFolder">
+            <Directory Id="CamDroidMenu" Name="CamDroid">
+                <Component
+                    Id="Menu"
+                    Guid="E4291606-7842-427A-9F2A-918F9F8FD851"
+                    Condition="INSTALLSTARTMENU = 1"
+                    Transitive="yes"
+                >
+                    <Shortcut
+                        Id="LaunchCamDroid"
+                        Name="CamDroid"
+                        Target="[#MainExe]"
+                        Icon="CamDroidIcon.ico"
+                        IconIndex="0"
+                        WorkingDirectory="INSTALLFOLDER"
+                    />
+                    <Shortcut
+                        Id="UninstallCamDroid"
+                        Name="Uninstall CamDroid"
+                        Target="[#UninstallExe]"
+                        Icon="CamDroidIcon.ico"
+                        IconIndex="0"
+                        WorkingDirectory="INSTALLFOLDER"
+                    />
+                    <RemoveFolder Id="RemoveMenu" On="uninstall"/>
+                    <RegistryValue
+                        Root="HKLM"
+                        Key="Software\CamDroid"
+                        Name="Menu"
+                        Value="1"
+                        Type="integer"
+                        KeyPath="yes"
+                    />
+                </Component>
+            </Directory>
+        </StandardDirectory>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Component
+                Id="CommandPath"
+                Guid="077C39B6-36B6-4238-8181-568AECE50604"
+                Condition="ADDTOPATH = 1"
+                Transitive="yes"
+            >
+                <Environment
+                    Id="CamDroidPath"
+                    Name="PATH"
+                    Value="[INSTALLFOLDER]"
+                    Action="set"
+                    Part="last"
+                    System="yes"
+                />
+                <RegistryValue
+                    Root="HKLM"
+                    Key="Software\CamDroid"
+                    Name="PathEntry"
+                    Value="1"
+                    Type="integer"
+                    KeyPath="yes"
+                />
+            </Component>
+            <Component Id="CameraRegistration" Guid="8A612041-20AE-422F-8C14-89358A2F6387">
+                <RegistryValue
+                    Root="HKLM"
+                    Key="Software\Classes\CLSID\{65F8632A-E539-48ED-B354-24A2D5371E94}\InprocServer32"
+                    Value="[#CameraDll]"
+                    Type="string"
+                    KeyPath="yes"
+                />
+                <RegistryValue
+                    Root="HKLM"
+                    Key="Software\Classes\CLSID\{65F8632A-E539-48ED-B354-24A2D5371E94}\InprocServer32"
+                    Name="ThreadingModel"
+                    Value="Both"
+                    Type="string"
+                />
+                <RegistryValue
+                    Root="HKLM"
+                    Key="Software\CamDroid"
+                    Name="InstallFolder"
+                    Value="[INSTALLFOLDER]"
+                    Type="string"
+                />
+                <ServiceControl
+                    Id="RefreshCameraHost"
+                    Name="FrameServer"
+                    Stop="both"
+                    Start="both"
+                    Wait="yes"
+                />
+            </Component>
+        </DirectoryRef>
+        <util:CloseApplication
+            Id="CloseCamDroid"
+            Target="camdroid_desktop.exe"
+            Description="Close CamDroid before continuing setup."
+            CloseMessage="yes"
+            ElevatedCloseMessage="yes"
+            Timeout="15"
+            RebootPrompt="no"
+            TerminateProcess="1"
+        />
+        <Binary Id="SetupActions" SourceFile="$(var.SetupActions)"/>
+        <CustomAction
+            Id="PrepareCameraData"
+            BinaryRef="SetupActions"
+            DllEntry="PrepareCameraData"
+            Execute="deferred"
+            Impersonate="no"
+            Return="check"
+        />
+        <CustomAction
+            Id="CleanLegacyCamera"
+            BinaryRef="SetupActions"
+            DllEntry="CleanLegacyCamera"
+            Execute="commit"
+            Impersonate="no"
+            Return="ignore"
+        />
+        <SetProperty
+            Id="CleanLegacyCamera"
+            Value="[#CameraDll]"
+            Before="CleanLegacyCamera"
+            Sequence="execute"
+        />
+        <InstallExecuteSequence>
+            <Custom Action="PrepareCameraData" After="InstallFiles" Condition="NOT REMOVE~=&quot;ALL&quot;"/>
+            <Custom Action="CleanLegacyCamera" After="PrepareCameraData" Condition="NOT REMOVE~=&quot;ALL&quot;"/>
+        </InstallExecuteSequence>
+        <Feature Id="Complete" Title="CamDroid desktop and webcam" Level="1">
+            <ComponentGroupRef Id="Payload"/>
+            <ComponentRef Id="CameraRegistration"/>
+            <ComponentRef Id="Menu"/>
+            <ComponentRef Id="CommandPath"/>
+        </Feature>
+        <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER"/>
+        <UI>
+            <Publish
+                Dialog="WelcomeDlg"
+                Control="Next"
+                Event="NewDialog"
+                Value="InstallDirDlg"
+                Order="2"
+                Condition="NOT Installed"
+            />
+            <Publish
+                Dialog="InstallDirDlg"
+                Control="Back"
+                Event="NewDialog"
+                Value="WelcomeDlg"
+                Order="2"
+            />
+        </UI>
+    </Package>
+</Wix>

@@ -1,0 +1,63 @@
+{
+    "name": "camdroid-desktop",
+    "version-string": "1.0",
+    "dependencies": [
+        {
+            "name": "ffmpeg",
+            "default-features": false,
+            "features": [
+                "avcodec",
+                "swscale",
+                "vulkan"
+            ]
+        },
+        {
+            "name": "qtbase",
+            "default-features": false,
+            "features": [
+                "png",
+                "widgets"
+            ]
+        },
+        {
+            "name": "qtbase",
+            "platform": "windows",
+            "default-features": false,
+            "features": [
+                "windeployqt"
+            ]
+        },
+        {
+            "name": "ffmpeg",
+            "default-features": false,
+            "features": [
+                "nvcodec"
+            ],
+            "platform": "linux | (windows & !uwp & !arm64)"
+        },
+        {
+            "name": "ffmpeg",
+            "default-features": false,
+            "features": [
+                "qsv"
+            ],
+            "platform": "(windows | linux) & (x64 | x86) & !uwp"
+        },
+        {
+            "name": "ffmpeg",
+            "default-features": false,
+            "features": [
+                "amf"
+            ],
+            "platform": "(windows | linux) & x64 & !uwp"
+        },
+        {
+            "name": "ffmpeg",
+            "default-features": false,
+            "features": [
+                "vaapi"
+            ],
+            "platform": "linux"
+        }
+    ]
+}
